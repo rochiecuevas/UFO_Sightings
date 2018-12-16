@@ -1,10 +1,7 @@
 // Print out the data
 console.log(data);
 
-
-// Define the date input field variable
-
-var output = d3.select(".output");
+// Define the submit variable (the Submit button)
 var submit = d3.select("#submit");
 
 submit.on("click", function(){
@@ -60,7 +57,7 @@ submit.on("click", function(){
         var row = tbody.append("tr");
 
         // For each key-value pair in each dict
-        Object.entries(dict).forEach(function([key,value]){
+        Object.entries(dict).forEach(function([,value]){
 
             // Preview each value
             console.log(value);
@@ -75,6 +72,16 @@ submit.on("click", function(){
 
 
 });
+
+// Create the options for selecting shapes
+var shapes = Array.from(new Set(data.map(dict => dict.shape)));
+console.log(shapes);
+shapes.unshift(""); // add a blank option
+
+
+
+
+
 
 
 

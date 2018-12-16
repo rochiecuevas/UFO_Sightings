@@ -1,0 +1,26 @@
+/* Formatting style */
+
+.jumbotron {
+    background-image: url("Aliens.jpg");
+    background-size: cover;
+}
+
+.jumbotron p{
+    color: white;
+    margin: 20px;
+}
+
+.jumbotron h1{
+    color: white;
+    margin: 20px;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center
+}
