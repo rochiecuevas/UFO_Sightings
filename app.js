@@ -1,9 +1,22 @@
 // Print out the data
 console.log(data);
 
-// Define an array of dates
+// Define an arrays of dates, countries, states, cities, shapes
 var dates = Array.from(new Set(data.map(dict => dict.datetime)));
-    console.log(dates);
+console.log(dates);
+
+var countries = Array.from(new Set(data.map(dict => dict.country)));
+console.log(countries);
+
+var cities = Array.from(new Set(data.map(dict => dict.city)));
+console.log(cities);  
+
+var states = Array.from(new Set(data.map(dict => dict.state)));
+console.log(states);  
+
+var shapes = Array.from(new Set(data.map(dict => dict.shape)));
+shapes.unshift(""); // add a blank option
+console.log(shapes);
 
 // Input date
 var inputDate = d3.select("#date");
@@ -23,12 +36,7 @@ function handleChange(){
     // Filter data based on the date input
     var filteredDate = data.filter(obj => obj.datetime === selectDate);
     console.log(filteredDate);
-
-    // Create the options for selecting shapes based on the dates
-    var shapes = Array.from(new Set(filteredDate.map(dict => dict.shape)));
-    shapes.unshift(""); // add a blank option
-    console.log(shapes);
-
+    
     // Select shape
     var selectShape = d3.select("#shape");
 
@@ -97,3 +105,5 @@ function handleChange(){
     selectShape.on("change", onchange);    
 }
 inputDate.on("change", handleChange);
+
+

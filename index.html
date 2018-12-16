@@ -25,28 +25,42 @@
         </div>
 
         <div class = "container">
-            <div class = "row">
-                <div class = "col-md-6 col-offset-md-3">
-                    <form>
-                        <div class = "form-group">
+            <form>
+                <div class = "row">
+                    <div class = "form-group">
+                        <div class = "col-md-6 col-offset-md-3">
                             <label for = "text">Choose a date:</label>
                             <select class = "form-control" id = "date"></select>
                             <br>
+                            <label for = "text">Choose a city:</label>
+                            <select class = "form-control" id = "city"></select>
+                            <br>
+                            <label>Choose a state:</label>
+                            <select class = "form-control" id = "state"></select>
+                        </div>
+                        <div class = "col-md-6 col-offset-md-3">
+                            <label for = "text">Choose a country:</label>
+                            <select class = "form-control" id = "country"></select>
+                            <br>
                             <label>Choose an alien shape:</label>
                             <select class = "form-control" id = "shape"></select>
+                            <br><br>
+                            <button class = "btn btn-success"><span class = "glyphicon glyphicon-refresh"></span> Refresh</button>
                         </div>
-                        <button class = "btn btn-success"><span class = "glyphicon glyphicon-refresh"></span> Refresh</button>
-                    </form>
-                </div>
-            </div>
-        </div>    
+                    </div>
+                </div>   
+            </form>
+            
+        </div>  
     </section>
-        
+
+        <hr>
+
     <section id = "data-table">
         <div class = container>
             <div class = "row">
                 <div class = "col-md-8 col-offset-md-2">
-                    <h2>Alien Sightings Filtered by Date</h2>
+                    <h2>Filtered Alien Sightings</h2>
                     <div class = "table"></div>
                 </div>
             </div>
@@ -57,9 +71,7 @@
         
         
     
-    <div class = "footer">
-        <p>Aliens-R-Real</p>
-    </div>
+
 
     <!-- More Javascript script -->
     <script src = "data.js"></script>
