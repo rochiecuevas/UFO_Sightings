@@ -68,3 +68,11 @@ body {
 .table tr {
     background-color: #f9f9f9;
 }
+
+#reloadpage {
+    /* Background Styles */
+    background-color: rgb(65, 64, 64);
+
+    /* Font Styles */
+    color: white;
+}
