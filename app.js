@@ -43,6 +43,7 @@ console.log(headers);
 
 
 // Loop through data from sightings and puts them in each variable, remove duplicates
+// This is for the options in the select fields
 var dataArr = [];
 for (var i = 0; i < headers.length; i ++){
     var variables = [];
