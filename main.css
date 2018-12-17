@@ -38,7 +38,7 @@ body {
 
 .hero .btn {
     /* Positioning and sizing */
-    display: block;
+    display: inline-block;
     width: 200px;
 
     /* Border style */
@@ -75,4 +75,12 @@ body {
 
     /* Font Styles */
     color: white;
+}
+
+.btn {
+    background-color: rgb(65, 64, 64);
+    
+    /* Text styles */
+    color: white;
+    text-decoration: none;
 }
