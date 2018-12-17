@@ -13,53 +13,45 @@
 
     <!-- Javascript -->
     <script src = "https://d3js.org/d3.v5.min.js"></script>
-    <title>Document</title>
+    <title>Aliens</title>
 </head>
 <body>
-    <section id = "introduction">
-        <div class = "jumbotron jumbotron-fluid text-left">
-            <h1>Aliens Among Us</h1>
-            <br>
-            <p>They want to keep the truth hidden. But we can prove the truth: Aliens are here.</p>
-            <p>We present eyewitness testimonials. Pick a date and see for yourself...</p>
+    <section class = "hero">
+        <div class = "hero-inner">
+                <h1>Aliens Among Us</h1>
+                <br>
+                <p>They want to keep the truth hidden. But we can prove the truth: Aliens are here.</p>
+                <p>We present eyewitness testimonials.</p>
+                <a href = "#data-table" class = "btn">See for yourself...</a>
         </div>
-
-        <div class = "container">
-            <form>
-                <div class = "row">
-                    <div class = "form-group">
-                        <div class = "col-md-6 col-offset-md-3">
-                            <label for = "text">Choose a date:</label>
-                            <select class = "form-control" id = "date"></select>
-                            <br>
-                            <label for = "text">Choose a state:</label>
-                            <select class = "form-control" id = "state"></select>
-                            <br>
-                        </div>
-                        <div class = "col-md-6 col-offset-md-3">
-                            <label for = "text">Choose a city:</label>
-                            <select class = "form-control" id = "city"></select>
-                            <br>
-                            <label>Choose an alien shape:</label>
-                            <select class = "form-control" id = "shape"></select>
-                            <br><br>
-                            <button class = "btn btn-success"><span class = "glyphicon glyphicon-refresh"></span> Refresh</button>
-                        </div>
-                    </div>
-                </div>   
-            </form>
-            
-        </div>  
     </section>
-
-        <hr>
 
     <section id = "data-table">
         <div class = container>
             <div class = "row">
-                <div class = "col-md-8 col-offset-md-2">
+                <div class = "col-md-9">
                     <h2>Filtered Alien Sightings</h2>
                     <div class = "table"></div>
+                    <button class = "btn btn-success" id = "reloadpage" onclick = "refreshPage()"><span class = "glyphicon glyphicon-refresh"></span> Refresh</button>
+                </div>
+                <div class = "col-md-3">
+                    <h2>Is anyone alive out there?</h2>
+                    <br>
+                    <p>It's a bird... It's a plane... It's an ALIEN!</p>
+                    <p>Use the filters to find specific information on alien sightings.</p>
+                    <br>
+                    <label for = "text">Choose a date:</label>
+                    <select class = "form-control" id = "date"></select>
+                    <br>
+                    <label for = "text">Choose a state:</label>
+                    <select class = "form-control" id = "state"></select>
+                    <br>
+                    <label for = "text">Choose a city:</label>
+                    <select class = "form-control" id = "city"></select>
+                    <br>
+                    <label>Choose an alien shape:</label>
+                    <select class = "form-control" id = "shape"></select>
+                    <br>
                 </div>
             </div>
         </div>

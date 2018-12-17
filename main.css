@@ -1,26 +1,70 @@
-/* Formatting style */
+/* Formatting */
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background-color: #f9f9f9;
+}
 
-.jumbotron {
-    background-image: url("Aliens.jpg");
+.hero {
+    /* Sizing of width (vw) and height (vh) */
+    width: 100vw; 
+    height: 100vh;
+
+    /* Flexbox centering */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Text style */
+    text-align: center;
+    color: white;
+
+    /* Background styles */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("Aliens.jpg");
     background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
-.jumbotron p{
-    color: white;
-    margin: 15px;
+.hero h1 {
+    /* Text styling */
+    font-size: 5em;
+
+    /* Margins */
+    margin-top: 0;
+    margin-bottom: 0.5em;
 }
 
-.jumbotron h1{
+.hero .btn {
+    /* Positioning and sizing */
+    display: block;
+    width: 200px;
+
+    /* Border style */
+    border: 3px solid gray;
+    border-radius: 20px;
+
+    /* Background styles */
+    background-color: rgb(65, 64, 64);
+
+    /* Padding and margins */
+    padding: 1em;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+
+    /* Text styles */
     color: white;
-    margin: 15px;
+    text-decoration: none;
+    font-size: 1em;
 }
 
-.footer {
-    position: static;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: black;
-    color: white;
-    text-align: center
+.col-md-3 {
+    /* Background styles */
+    background-color: #e8e8e8;
+}
+
+.table tr {
+    background-color: #f9f9f9;
 }
