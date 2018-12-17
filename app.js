@@ -66,7 +66,7 @@ var optDate = inputDate
         return date;
     });
 
-// Create the full table
+// Create the complete table
 var table = d3.select(".table").append("table");
     table.attr("class", "table table-hover");
     table.attr("id", "table1");
@@ -113,9 +113,9 @@ sightings.forEach(function(dict){
 });
 
 // Filter the table (nested; i.e., choose the date first, then the state, then the city, then the alien ship shape)
-function changeDate(){ // will be activated once a choice is made in the select field for Date
-    tbody.text(""); // clears the complete table first before the filtered table is loaded
-    var selDate = inputDate.property("value"); // the selected date
+function changeDate(){  // will be activated once a choice is made in the select field for Date
+    tbody.text("");  // clears the complete table first before the filtered table is loaded
+    var selDate = inputDate.property("value");  // the selected date
     console.log(selDate);
 
     // filter the sightings array to get all objects containing the selected date
@@ -146,7 +146,7 @@ function changeDate(){ // will be activated once a choice is made in the select 
         console.log(states);  
 
         var inputState = d3.select("#state");
-        var optState = inputState
+        var optState = inputState  // populate the options depending on the values in the filtered table
             .selectAll("option")
             .data(states).enter()
             .append("option")
@@ -154,7 +154,7 @@ function changeDate(){ // will be activated once a choice is made in the select 
                 return state;
             });
 
-        function changeState(){
+        function changeState(){  // nested function: after selecting the date, options available are states with sightings on that date
             tbody.text("");
             var selState = inputState.property("value");
             console.log(selState);
@@ -181,93 +181,99 @@ function changeDate(){ // will be activated once a choice is made in the select 
                 });
             });
 
+            var cities = Array.from(new Set(filterState.map(dict => dict.City)));
+            cities.unshift("All");
+            console.log(cities); 
 
-        var cities = Array.from(new Set(filterState.map(dict => dict.City)));
-        cities.unshift("All");
-        console.log(cities); 
-
-        var inputCity = d3.select("#city");
-        var optCity = inputCity
-        .selectAll("option")
-        .data(cities).enter()
-        .append("option")
-        .text(function(city){
-            return city;
-        });
-
-        function changeCity(){
-            tbody.text("");
-            var selCity = inputCity.property("value");
-            console.log(selCity);
-    
-            var filterCity = filterState.filter(sighting => sighting.City === selCity);
-            console.log(filterCity);
-    
-            filterCity.forEach(function(dict){ 
-    
-            // Add a row where values of each dict can go into
-            var row = tbody.append("tr");
-        
-            // For each key-value pair in each dict
-            Object.entries(dict).forEach(function([key,value]){
-        
-                // Preview each value
-                console.log(value);
-        
-                // Add a cell in each row for each value
-                var cell = row.append("td");
-        
-                // Write each value into each cell
-                cell.text(value);
-                });
+            var inputCity = d3.select("#city");
+            var optCity = inputCity
+            .selectAll("option")
+            .data(cities).enter()
+            .append("option")
+            .text(function(city){
+                return city;
             });
 
-            var shapes = Array.from(new Set(filterCity.map(dict => dict.Shape)));
-            shapes.unshift("All");
-            console.log(shapes);
-
-            var inputShape = d3.select("#shape");
-            var optShape = inputShape
-                .selectAll("option")
-                .data(shapes).enter()
-                .append("option")
-                .text(function(shape){
-                    return shape;
-                });
-
-            function changeShape(){
+            function changeCity(){
                 tbody.text("");
-                var selShape = inputShape.property("value");
-                console.log(selShape);
-
-                var filterShape = filterCity.filter(sighting => sighting.Shape === selShape);
-                console.log(filterShape);
-
-                filterShape.forEach(function(dict){ 
-
-                    // Add a row where values of each dict can go into
-                    var row = tbody.append("tr");
-                
-                    // For each key-value pair in each dict
-                    Object.entries(dict).forEach(function([key,value]){
-                
-                        // Preview each value
-                        console.log(value);
-                
-                        // Add a cell in each row for each value
-                        var cell = row.append("td");
-                
-                        // Write each value into each cell
-                        cell.text(value);
+                var selCity = inputCity.property("value");
+                console.log(selCity);
+        
+                var filterCity = filterState.filter(sighting => sighting.City === selCity);
+                console.log(filterCity);
+        
+                filterCity.forEach(function(dict){ 
+        
+                // Add a row where values of each dict can go into
+                var row = tbody.append("tr");
+            
+                // For each key-value pair in each dict
+                Object.entries(dict).forEach(function([key,value]){
+            
+                    // Preview each value
+                    console.log(value);
+            
+                    // Add a cell in each row for each value
+                    var cell = row.append("td");
+            
+                    // Write each value into each cell
+                    cell.text(value);
                     });
                 });
 
+                var shapes = Array.from(new Set(filterCity.map(dict => dict.Shape)));
+                shapes.unshift("All");
+                console.log(shapes);
+
+                var inputShape = d3.select("#shape");
+                var optShape = inputShape
+                    .selectAll("option")
+                    .data(shapes).enter()
+                    .append("option")
+                    .text(function(shape){
+                        return shape;
+                    });
+
+                function changeShape(){
+                    tbody.text("");
+                    var selShape = inputShape.property("value");
+                    console.log(selShape);
+
+                    var filterShape = filterCity.filter(sighting => sighting.Shape === selShape);
+                    console.log(filterShape);
+
+                    filterShape.forEach(function(dict){ 
+
+                        // Add a row where values of each dict can go into
+                        var row = tbody.append("tr");
+                    
+                        // For each key-value pair in each dict
+                        Object.entries(dict).forEach(function([key,value]){
+                    
+                            // Preview each value
+                            console.log(value);
+                    
+                            // Add a cell in each row for each value
+                            var cell = row.append("td");
+                    
+                            // Write each value into each cell
+                            cell.text(value);
+                        });
+                    });
+
+                document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen
+                };
+                inputShape.on("change", changeShape);
+
+            document.getElementById("city").disabled = true;  // grey out the select field once an option is chosen
             };
-            inputShape.on("change", changeShape);
+            inputCity.on("change", changeCity);    
+
+        document.getElementById("state").disabled = true;  // grey out the select field once an option is chosen  
         };
-        inputCity.on("change", changeCity);    
-    };
-    inputState.on("change", changeState);
+        inputState.on("change", changeState);
+
+document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen
 };
 inputDate.on("change", changeDate);
 
@@ -277,5 +283,5 @@ function refreshPage(){
     window.location.reload(true);
 }
 
-setFilterGrid("table");
+
 
