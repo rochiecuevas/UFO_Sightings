@@ -112,7 +112,10 @@ sightings.forEach(function(dict){
     });
 });
 
-// Filter the table (nested; i.e., choose the date first, then the state, then the city, then the alien ship shape)
+// Filter the table by step
+// Nested; i.e., choose the date first, then the state, then the city, then the alien ship shape
+// This approach makes the list shorter each time but will not show an empty table
+
 function changeDate(){  // will be activated once a choice is made in the select field for Date
     tbody.text("");  // clears the complete table first before the filtered table is loaded
     var selDate = inputDate.property("value");  // the selected date
