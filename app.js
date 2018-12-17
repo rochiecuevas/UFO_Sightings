@@ -7,7 +7,7 @@ var map = {
     city: "City",
     state: "State",
     country: "Country",
-    comments: "Comments",
+    comments: "Witness' Account",
     shape: "Shape",
     durationMinutes: "Duration"
 }
@@ -116,6 +116,7 @@ sightings.forEach(function(dict){
 // Filter the table by step
 // Nested; i.e., choose the date first, then the state, then the city, then the alien ship shape
 // This approach makes the list shorter each time but will not show an empty table
+// Resource: https://stackoverflow.com/a/48834500
 
 function changeDate(){  // will be activated once a choice is made in the select field for Date
     tbody.text("");  // clears the complete table first before the filtered table is loaded
@@ -126,7 +127,7 @@ function changeDate(){  // will be activated once a choice is made in the select
     var filterDate = sightings.filter(sighting => sighting.Date === selDate);
     console.log(filterDate);
 
-    filterDate.forEach(function(dict){ 
+    filterDate.forEach(function(dict){ // for each dict in the filterDate array
 
         // Add a row where values of each dict can go into
         var row = tbody.append("tr");
@@ -144,9 +145,10 @@ function changeDate(){  // will be activated once a choice is made in the select
             cell.text(value);
         });
     });
-
+        
+        // Create an array containing unique states from the filterDate array 
         var states = Array.from(new Set(filterDate.map(dict => dict.State)));
-        states.unshift("All");
+        states.unshift("All"); // Put "All" as the first item in the array
         console.log(states);  
 
         var inputState = d3.select("#state");
@@ -282,10 +284,117 @@ document.getElementById("date").disabled = true;  // grey out the select field o
 inputDate.on("change", changeDate);
 
 // Refresh button
+// Resource: https://stackoverflow.com/a/50324264
 var button = d3.select(".btn");
 function refreshPage(){
     window.location.reload(true);
 }
 
+// PLOTTING ATTEMPT
+// Count the number of sightings per date, per state, per country, per shape, per city
+var dataArr2 = []; // create an empty list
+for (var k = 0; k < headers.length; k ++){ // for each header
+    var variables2 = [];
+    variables2[k] = []; // create an empty list
+    sightings.map(function(sighting){ //for each sighting
+    variables2[k].push(sighting[headers[k]]); // add the value of each header in the corresponding array (e.g., date values in the date array)
+    })
+    dataArr2.push(variables2[k]); // add the arrays in one array ready for word counter
+}
+console.log(dataArr2);
 
+// Create a function that counts the number of each value per key (based on the sightings array)
+function wordCount(array){
+    word_count = {};
+    for (var l = 0; l < array.length; l ++){
+        if (word_count[array[l]]){
+            word_count[array[l]] += 1;
+        } else {
+            word_count[array[l]] = 1;
+        };
+    };
+    return word_count;
+};
+
+// Use the wordCount function to count the number of sightings based on location, date, and appearance of alien ship
+// for each array in dataArr2
+var counts = [];
+
+dataArr2.forEach(function(array){
+    counts.push(wordCount(array));
+});
+
+// Create separate arrays of keys and values per object for the following arrays:
+// Date (counts[0]), State (counts[2]), Shape (counts[4])
+var grpObj = [counts[0], counts[2], counts[4]];
+
+// Create functions that could separate the key-value pairs in each object
+
+function createArrays(obj){
+    var keys = [];
+    var values = [];
+    Object.entries(obj).forEach(function([key,value]){
+        keys.push(key);
+        values.push(value);
+    });
+    return [keys, values];
+}
+// Use the createArrays function to separate the keys and values into arrays
+var grpArrays = [];
+grpObj.forEach(function(obj){
+    grpArrays.push(createArrays(obj));
+});
+
+console.log(grpArrays);
+
+// Create a barplot for sighting dates
+var trace = {
+    x: grpArrays[0][0],
+    y: grpArrays[0][1],
+    type: "bar"
+};
+
+var data = [trace];
+
+var layout = {
+    title: "Sightings on different dates",
+    xaxis: {title: "Date"},
+    yaxis: {title: "Number of sightings"}
+}
+
+Plotly.newPlot("bar-plot1", data, layout);
+
+// Create a barplot for states where sightings happened
+var trace = {
+    x: grpArrays[1][0],
+    y: grpArrays[1][1],
+    type: "bar"
+};
+
+var data = [trace];
+
+var layout = {
+    title: "Frequency of alien sightings in different states",
+    xaxis: {title: "State"},
+    yaxis: {title: "Number of sightings"}
+}
+
+Plotly.newPlot("bar-plot2", data, layout);
+
+// Create a barplot for sighting shapes
+var trace = {
+    x: grpArrays[2][0],
+    y: grpArrays[2][1],
+    type: "bar"
+};
+
+var data = [trace];
+
+var layout = {
+    title: "Frequency of different descriptions of alien ships sighted",
+    xaxis: {title: "Appearance"},
+    yaxis: {title: "Number of sightings"}
+}
+
+Plotly.newPlot("bar-plot3", data, layout);
 
