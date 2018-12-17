@@ -13,6 +13,7 @@
 
     <!-- Javascript -->
     <script src = "https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <title>Aliens</title>
 </head>
 <body>
@@ -21,8 +22,10 @@
                 <h1>Aliens Among Us</h1>
                 <br>
                 <p>They want to keep the truth hidden. But we <i>know</i> the truth: Aliens are here.</p>
-                <p>We present eyewitness testimonials.</p>
-                <a href = "#data-table" class = "btn">See for yourself...</a>
+                <p><b>Aliens-R-Real</b> presents eyewitness testimonials.</p>
+                <p>Let the truth set you free.</p>
+                <a href = "#data-table" class = "btn"><span class = "glyphicon glyphicon-eye-open"></span> Testimonials</a>
+                <a href = "#data-graphs" class = "btn"><span class = "glyphicon glyphicon-stats"></span> Trends</a>
         </div>
     </section>
 
@@ -30,18 +33,25 @@
         <div class = container>
             <div class = "row">
                 <div class = "col-md-9">
-                    <h2>Filtered Alien Sightings</h2>
+                    <h2>When and Where Aliens Have Been Seen</h2>
                     <hr>
                     <p>Table 1. A compilation of alien sightings.</p>
                     <div class = "table"></div>
+                    <!-- table will be inserted here using d3.js -->
+
+                    <!-- add Refresh button at the end of the table -->
                     <button type = "button" class = "btn" id = "reloadpage" onclick = "refreshPage()"><span class = "glyphicon glyphicon-refresh"></span> Refresh</button>
+                    
+                    <!-- Add a button that leads to the graphs -->
+                    <a href = "#data-graphs" class = "btn btn-secondary"><span class = "glyphicon glyphicon-stats"></span> Trends</a>
                 </div>
+                <!-- Side bar with filters -->
                 <div class = "col-md-3">
-                    <h2>Is anyone alive out there?</h2>
+                    <h2>Is there an alien sighting near you?</h2>
                     <br>
                     <p>It's a bird... It's a plane... It's an ALIEN!</p>
                     <p>Use the filters to find specific information on alien sightings.</p>
-                    <br>
+                    <hr>
                     <label for = "text">Choose a date:</label>
                     <select class = "form-control" id = "date"></select>
                     <br>
@@ -58,6 +68,26 @@
             </div>
         </div>
         
+    </section>
+
+    <section id = "data-graphs">
+        <div class = "container">
+            <div class = "row">
+                <div class = "col-md-12">
+                    <!-- Bar plots of alien sighting frequency -->
+                    <div id = "bar-plot1"></div> <!-- Dates -->
+                    <hr>
+                    <div id = "bar-plot2"></div> <!-- States -->
+                    <hr>
+                    <div id = "bar-plot3"></div> <!-- Shapes -->
+
+                    <br>
+                    
+                    <!-- Add a button that will go back to the table -->
+                    <a href = "#data-table" class = "btn"><span class = "glyphicon glyphicon-eye-open"></span> Testimonials</a>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- More Javascript script -->
