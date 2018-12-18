@@ -2,7 +2,6 @@
 body {
     margin: 0;
     font-family: sans-serif;
-    background-color: #f9f9f9;
 }
 
 .hero {
@@ -62,11 +61,12 @@ body {
 
 .col-md-3 {
     /* Background styles */
-    background-color: #e8e8e8;
+    background-color: black;
 }
 
 .table tr {
-    background-color: #f9f9f9;
+    text-transform: uppercase;
+    background-color: #404040;
 }
 
 #reloadpage {
@@ -77,10 +77,26 @@ body {
     color: white;
 }
 
-.btn {
-    background-color: rgb(65, 64, 64);
-    
+.btn, .btn:hover {
+    background-color: black;
+    border-color: black;
+
     /* Text styles */
     color: white;
     text-decoration: none;
 }
+
+#data-graphs {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+#data-table {
+    /* background-color: #f9f9f9; */
+    background-color: #404040;
+    color: white;
+}
+
