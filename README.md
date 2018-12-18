@@ -8,7 +8,7 @@ There are three files containing the codes used in creating the page:
 1. [app.js](https://github.com/rochiecuevas/UFO_Sightings/blob/master/app.js): the code used to put the data provided (as a list of dictionaries; in Javascript referred to as an array of objects) into tables and to create bar charts.
 1. [main.css](https://github.com/rochiecuevas/UFO_Sightings/blob/master/main.css): the customised styles that were not included in Bootstrap CSS.
 
-A complete documentation of the code used is found in the repository's [wiki](https://github.com/rochiecuevas/UFO_Sightings/wiki) section.
+Head over to the repository's [wiki](https://github.com/rochiecuevas/UFO_Sightings/wiki) section to see the detailed description of the code used in generating the final output.
 
 The final product (index.html) consists of three sections:
 
