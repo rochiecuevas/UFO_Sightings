@@ -100,3 +100,51 @@ body {
     color: white;
 }
 
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+/* For small screens */
+@media screen and (max-width: 600px) {
+    .hero {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("Galaxy.jpg"); 
+        background-repeat: no-repeat; 
+        background-position: center;
+        background-size: cover;
+    }
+
+    .hero .btn {
+        /* Positioning and sizing */
+        display: inline-block;
+        width: 200px;
+    
+        /* Border style */
+        border: 3px solid gray;
+        border-radius: 20px;
+    
+        /* Background styles */
+        background-color: navy;
+    
+        /* Padding and margins */
+        padding: 1em;
+        margin-top: 50px;
+        margin-left: auto;
+        margin-right: auto;
+    
+        /* Text styles */
+        color: white;
+        text-decoration: none;
+        font-size: 1em;
+    }
+
+    .hero h1 {
+        /* Text styling */
+        font-size: 3em;
+    
+        /* Margins */
+        margin-top: 0;
+        margin-bottom: 0.5em;
+    }
+}
