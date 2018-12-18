@@ -17,14 +17,14 @@
     <title>Aliens</title>
 </head>
 <body>
-    <section class = "hero">
+    <section class = "hero" id = "hero">
         <div class = "hero-inner">
                 <h1>Aliens Among Us</h1>
                 <br>
                 <p>They want to keep the truth hidden. But we <i>know</i> the truth: Aliens are here.</p>
                 <p><b>Aliens-R-Real</b> presents eyewitness testimonials.</p>
                 <p>Let the truth set you free.</p>
-                <a href = "#data-table" class = "btn"><span class = "glyphicon glyphicon-eye-open"></span> Testimonials</a>
+                <a href = "#data-table" class = "btn">👀 Testimonials</a>
                 <a href = "#data-graphs" class = "btn"><span class = "glyphicon glyphicon-stats"></span> Trends</a>
         </div>
     </section>
@@ -34,57 +34,66 @@
             <div class = "row">
                 <div class = "col-md-9">
                     <h2>When and Where Aliens Have Been Seen</h2>
-                    <hr>
-                    <p>Table 1. A compilation of alien sightings.</p>
+
+                    <!-- Add a button that leads to the graphs -->
+                    <a href = "#data-graphs" class = "btn btn-secondary"><span class = "glyphicon glyphicon-stats"></span> Go to Trends</a>
+
+                    <!-- Add a button that leads to the hero -->
+                    <a href = "#hero" class = "btn btn-secondary">👽 Home</a>
+                    <br>
+                    <br>
                     <div class = "table"></div>
                     <!-- table will be inserted here using d3.js -->
-
-                    <!-- add Refresh button at the end of the table -->
-                    <button type = "button" class = "btn" id = "reloadpage" onclick = "refreshPage()"><span class = "glyphicon glyphicon-refresh"></span> Refresh</button>
-                    
-                    <!-- Add a button that leads to the graphs -->
-                    <a href = "#data-graphs" class = "btn btn-secondary"><span class = "glyphicon glyphicon-stats"></span> Trends</a>
                 </div>
                 <!-- Side bar with filters -->
                 <div class = "col-md-3">
-                    <h2>Is there an alien sighting near you?</h2>
+                    <div id = "table-filters">
+                        <h2>Is there an alien sighting near you?</h2>
+                        <br>
+                        <p>It's a bird... It's a plane... It's an ALIEN!</p>
+                        <p>Use the filters to find specific information on alien sightings.</p>
+                        <hr>
+                        <label for = "text">Choose a date:</label>
+                        <select class = "form-control" id = "date"></select>
+                        <br>
+                        <label for = "text">Choose a state:</label>
+                        <select class = "form-control" id = "state"></select>
+                        <br>
+                        <label for = "text">Choose a city:</label>
+                        <select class = "form-control" id = "city"></select>
+                        <br>
+                        <label>Choose an alien shape:</label>
+                        <select class = "form-control" id = "shape"></select>
+                        <br>
+                    </div>
+                    <!-- add Refresh button at the end of the table -->
+                    <button type = "button" class = "btn" id = "reloadpage" onclick = "refreshPage()"><span class = "glyphicon glyphicon-refresh"></span> Refresh</button>
                     <br>
-                    <p>It's a bird... It's a plane... It's an ALIEN!</p>
-                    <p>Use the filters to find specific information on alien sightings.</p>
-                    <hr>
-                    <label for = "text">Choose a date:</label>
-                    <select class = "form-control" id = "date"></select>
-                    <br>
-                    <label for = "text">Choose a state:</label>
-                    <select class = "form-control" id = "state"></select>
-                    <br>
-                    <label for = "text">Choose a city:</label>
-                    <select class = "form-control" id = "city"></select>
-                    <br>
-                    <label>Choose an alien shape:</label>
-                    <select class = "form-control" id = "shape"></select>
                     <br>
                 </div>
             </div>
         </div>
-        
     </section>
 
     <section id = "data-graphs">
         <div class = "container">
             <div class = "row">
                 <div class = "col-md-12">
+                    <h2>Are there patterns to these alien sightings?</h2>
+
+                    <!-- Add a button that will go back to the table -->
+                    <a href = "#data-table" class = "btn">👀 Go to Testimonials</a>
+
+                    <!-- Add a button that leads to the hero -->
+                    <a href = "#hero" class = "btn btn-secondary">👽 Home</a>
+                    <hr>
+
                     <!-- Bar plots of alien sighting frequency -->
                     <div id = "bar-plot1"></div> <!-- Dates -->
                     <hr>
                     <div id = "bar-plot2"></div> <!-- States -->
                     <hr>
                     <div id = "bar-plot3"></div> <!-- Shapes -->
-
-                    <br>
-                    
-                    <!-- Add a button that will go back to the table -->
-                    <a href = "#data-table" class = "btn"><span class = "glyphicon glyphicon-eye-open"></span> Testimonials</a>
                 </div>
             </div>
         </div>
