@@ -9,6 +9,7 @@ There are three files containing the codes used in creating the page:
 1. [main.css](https://github.com/rochiecuevas/UFO_Sightings/blob/master/main.css): the customised styles that were not included in Bootstrap CSS.
 
 The generated web page (index.html) consists of three sections:
+
 |Section|Screenshot|
 |---|---|
 |hero|![alt text](https://github.com/rochiecuevas/UFO_Sightings/blob/master/index-screenshot.png)|
