@@ -69,7 +69,7 @@ var optDate = inputDate
 
 // Create the complete table
 var table = d3.select(".table").append("table");
-    table.attr("class", "table table-hover");
+    table.attr("class", "table");
     table.attr("id", "table1");
 
 // Populate the thead using the headers array    
@@ -362,7 +362,7 @@ var layout = {
     yaxis: {title: "Number of sightings"}
 }
 
-Plotly.newPlot("bar-plot1", data, layout);
+Plotly.newPlot("bar-plot1", data, layout, {responsive: true});
 
 // Create a barplot for states where sightings happened
 var trace = {
@@ -379,7 +379,7 @@ var layout = {
     yaxis: {title: "Number of sightings"}
 }
 
-Plotly.newPlot("bar-plot2", data, layout);
+Plotly.newPlot("bar-plot2", data, layout, {responsive: true});
 
 // Create a barplot for sighting shapes
 var trace = {
@@ -396,5 +396,5 @@ var layout = {
     yaxis: {title: "Number of sightings"}
 }
 
-Plotly.newPlot("bar-plot3", data, layout);
+Plotly.newPlot("bar-plot3", data, layout, {responsive: true});
 
