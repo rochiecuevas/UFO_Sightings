@@ -38,7 +38,7 @@
 
 Formatting the hero section involved adding a hero image to the background in `main.css`. For viewing in screens bigger than 600px, a portrait of an alien obtained from a New York Post article was used. A linear gradient was added to darken the image and allow font written in white to be more readble.
 
-```html
+```css
 .hero {
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("Aliens.jpg");
     background-size: cover;
@@ -50,7 +50,7 @@ Formatting the hero section involved adding a hero image to the background in `m
 
 For smaller screens, an image of a [galaxy](https://thewallpaper.co/wp-content/uploads/2016/09/stars-galaxy-free-download-earth-wallpapers-iphone-wallpapers-astro-amazing-1920x1080.jpg) was used as the hero image instead.
 
-```html
+```css
 @media screen and (max-width: 600px) {
     .hero {
         background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("Galaxy.jpg"); 
@@ -60,6 +60,71 @@ For smaller screens, an image of a [galaxy](https://thewallpaper.co/wp-content/u
     }
 ```
 
- ### Data visualisation using `app.css`
- ### Creation of an other-worldly vibe using `main.css`
+The __#data-table__ section was set up to contain a row divided into two columns 
 
+Populating the #data-table section with a table that can be filtered required manipulating the data provided in the `app.js` file. First, the new key names were placed in an object.
+
+```js
+// Rename the keys in data
+var map = {
+    datetime: "Date",
+    city: "City",
+    state: "State",
+    country: "Country",
+    comments: "Witness' Account",
+    shape: "Shape",
+    durationMinutes: "Duration"
+}
+```
+
+Second, a function, "editKey", was defined. This function replaced each original key with the key name in map in an object.
+
+```js
+function editKey(obj){
+    var replacedItems = Object.keys(obj).map((key) =>{
+        var newKey = map[key] || key;
+        return{[newKey]:obj[key]};
+    });
+    var newTab = replacedItems.reduce((a, b) => Object.assign({}, a, b));
+    return newTab;
+}
+```
+
+Third, editKey was iterated through each object in the data array.
+
+```js
+var sightings = [];
+data.forEach(function(dat){
+    sightings.push(editKey(dat));
+});
+console.log(sightings);
+```
+
+Creating the headers for the table was done by getting the keys in the first object in the data array.
+
+```js
+var firstSighting = sightings[0];
+console.log(firstSighting);
+
+var headers = [];
+Object.keys(firstSighting).forEach(key => 
+    headers.push(key));
+console.log(headers);
+```
+
+Lists of unique values per key were generated based on the objects in the sightings array. These lists were for the filter options in the select fields in the html file.
+
+```js
+var dataArr = [];
+for (var i = 0; i < headers.length; i ++){
+    var variables = [];
+    variables[i] = [];
+    sightings.map(function(sighting){
+    variables[i].push(sighting[headers[i]]);
+    })
+    variables[i] = Array.from(new Set(variables[i]));
+    variables[i].unshift("All") // put "All" as the first choice
+    dataArr.push(variables[i]);
+}
+console.log(dataArr);
+```
