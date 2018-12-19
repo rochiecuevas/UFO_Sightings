@@ -19,7 +19,7 @@ body {
     color: white;
 
     /* Background styles */
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("Aliens.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("Images/Aliens.jpg");
     background-size: cover; /* cover entire hero screen */
     background-position: center center; /* image is centred */
     background-repeat: no-repeat; /* prevent tiling */
@@ -103,7 +103,7 @@ body {
 /* For small screens */
 @media screen and (max-width: 600px) {
     .hero {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("Galaxy.jpg"); 
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("Images/Galaxy.jpg"); 
         background-repeat: no-repeat; 
         background-position: center;
         background-size: cover;
