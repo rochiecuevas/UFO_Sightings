@@ -288,7 +288,7 @@ inputDate.on("change", changeDate);
 var button = d3.select(".btn");
 function refreshPage(){
     window.location.reload(true);
-}
+};
 
 // PLOTTING ATTEMPT
 // Count the number of sightings per date, per state, per country, per shape, per city
