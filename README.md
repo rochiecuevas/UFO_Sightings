@@ -18,3 +18,9 @@ The final product (index.html) consists of three sections:
 |table|![alt text](https://github.com/rochiecuevas/UFO_Sightings/blob/master/filter-date-table.png)|
 |graphs|![alt text](https://github.com/rochiecuevas/UFO_Sightings/blob/master/graph-screenshot.png)|
 
+## Insights:
+It was interesting to see that the graphs revealed that the highest number of UFO sightings occurred on January 1st; that these sightings were mostly described as light; and they were mostly seen in California. These pieces of information suggest that many UFO spotters most likely mistook distant fireworks (as people ushered in the New Year) as alien space ships. 
+
+Why were sightings mostly reported in California?
+
+There are two factors that might have led to the high reporting in the state: population and clear nighttime skies. Among US states, California had the [highest population in 2010](https://en.wikipedia.org/wiki/List_of_states_and_territories_of_the_United_States_by_population) and has the [second highest number of clear days in a year](https://www.currentresults.com/Weather/US/average-annual-state-sunshine.php). It's possible that there were just more people spending more time outdoors at night, looking up into the heavens.
