@@ -14,9 +14,9 @@ The final product (index.html) consists of three sections:
 
 |Section|Screenshot|
 |---|---|
-|hero|![alt text](https://github.com/rochiecuevas/UFO_Sightings/blob/master/index-screenshot.png)|
-|table|![alt text](https://github.com/rochiecuevas/UFO_Sightings/blob/master/filter-date-table.png)|
-|graphs|![alt text](https://github.com/rochiecuevas/UFO_Sightings/blob/master/graph-screenshot.png)|
+|hero|![hero landing page](https://github.com/rochiecuevas/UFO_Sightings/blob/master/Screenshots/index-screenshot.png)|
+|table|![table](https://github.com/rochiecuevas/UFO_Sightings/blob/master/Screenshots/filter-date-table.png)|
+|graphs|![graph](https://github.com/rochiecuevas/UFO_Sightings/blob/master/Screenshots/graph-screenshot.png)|
 
 ## Insights:
 It was interesting to see that the graphs revealed that the highest number of UFO sightings occurred on January 1st; that these sightings were mostly described as light; and they were mostly seen in California. These pieces of information suggest that many UFO spotters most likely mistook distant fireworks (as people ushered in the New Year) as alien space ships. 
