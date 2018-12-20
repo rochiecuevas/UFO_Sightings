@@ -1,4 +1,4 @@
-// Print out the data
+// Print out the data from data.js
 console.log(data);
 
 // Rename the keys in data
@@ -10,23 +10,23 @@ var map = {
     comments: "Witness' Account",
     shape: "Shape",
     durationMinutes: "Duration"
-}
+};
 
 // Create a function that can be iterated through the objects in the data array
 // Resource: https://stackoverflow.com/a/43839611
-function editKey(obj){
+function editData(obj, dict){
     var replacedItems = Object.keys(obj).map((key) =>{
-        var newKey = map[key] || key;
+        var newKey = dict[key] || key;
         return{[newKey]:obj[key]};
     });
     var newTab = replacedItems.reduce((a, b) => Object.assign({}, a, b));
     return newTab;
-}
+};
 
-// Use editKey function to edit the key names in each object in the data array
+// Use editData function to edit the key names in each object in the data array
 var sightings = [];
 data.forEach(function(dat){
-    sightings.push(editKey(dat));
+    sightings.push(editData(dat, map));
 });
 console.log(sightings);
 
@@ -39,7 +39,6 @@ var headers = [];
 Object.keys(firstSighting).forEach(key => 
     headers.push(key));
 console.log(headers);
-
 
 
 // Loop through data from sightings and puts them in each variable, remove duplicates
@@ -57,238 +56,798 @@ for (var i = 0; i < headers.length; i ++){
 }
 console.log(dataArr);
 
-// Adding the list of options in the select input field (used for filtering)
-var inputDate = d3.select("#date");
-var optDate = inputDate
-    .selectAll("option") // for each item in the list, an option HTML tag is created
-    .data(dataArr[0]).enter() // dataArr[0] corresponds to the Date in the data array
-    .append("option")
-    .text(function(date){
-        return date;
-    });
-
-// Create the complete table
+      
+// Create the table
 var table = d3.select(".table").append("table");
     table.attr("class", "table");
-    table.attr("id", "table1");
 
-// Populate the thead using the headers array    
-var thead = table.append("thead"); // add the thead HTML element
-var row_head = thead.append("tr") // Add a row in thead
-    row_head.attr("class", "header"); // differentiate header row from data row
+// Populate the table with a table header and thead rows
+var thead = table.append("thead");
+var rowHead = thead.append("tr");
 
-// Create a for loop that iterates through the headers array
 headers.forEach(function(header){
-
-    // Preview each header
+    var cells = rowHead.append("th");
     console.log(header);
-
-    // Define the variable cell for each header
-    var cell = row_head.append("th");
-
-    // Write each header into each cell
-    cell.text(header);
+    cells.text(header);
 });
 
-// Populate the tbody using the date in the output variable
-var tbody = table.append("tbody"); // add the tbody HTML element
+// Populate the table with the table body and tbody rows
+var tbody = table.append("tbody");
 
-// Create a for loop using forEach (i.e., for each dict in sightings)
-sightings.forEach(function(dict){ 
 
-    // Add a row where values of each dict can go into
-    var row = tbody.append("tr");
-
-    // For each key-value pair in each dict
-    Object.entries(dict).forEach(function([key,value]){
-
-        // Preview each value
+sightings.forEach(function(sighting){
+    console.log(sighting);
+    var rowBody = tbody.append("tr");
+    Object.entries(sighting).forEach(function([key,value]){
+        var cell = rowBody.append("td");
         console.log(value);
-
-        // Add a cell in each row for each value
-        var cell = row.append("td");
-
-        // Write each value into each cell
         cell.text(value);
-    });
+    })
 });
 
-// Filter the table by step
-// Nested; i.e., choose the date first, then the state, then the city, then the alien ship shape
-// This approach makes the list shorter each time but will not show an empty table
-// Resource: https://stackoverflow.com/a/48834500
+// Identifying the select fields
+var inputDate = d3.select("#date");
+var inputCity = d3.select("#city");
+var inputState = d3.select("#state");
+var inputShape = d3.select("#shape");
 
-function changeDate(){  // will be activated once a choice is made in the select field for Date
-    tbody.text("");  // clears the complete table first before the filtered table is loaded
-    var selDate = inputDate.property("value");  // the selected date
-    console.log(selDate);
+// Identifying the option fields
+var optDate, optCity, optState,  optShape;
 
-    // filter the sightings array to get all objects containing the selected date
-    var filterDate = sightings.filter(sighting => sighting.Date === selDate);
-    console.log(filterDate);
+// Create arrays 
+var ids = ["date", "state", "city", "shape"]; // option classes
+var inputNames = [inputDate, inputState, inputCity, inputShape]; // input fields
+var optionValues = [dataArr[0], dataArr[2], dataArr[1], dataArr[4]]; // options lists
+var optionEntries = [optDate, optCity, optState, optShape]; // option names
 
-    filterDate.forEach(function(dict){ // for each dict in the filterDate array
 
-        // Add a row where values of each dict can go into
+// Create a function that populates the option fields per select field
+function optionList(inputArr, dataArr, id){
+    var options = inputArr
+        .selectAll("option")
+        .data(dataArr).enter()
+        .append("option")
+        .text(function(id){
+            return id;
+        })
+        .attr("id", id)
+        .sort();
+    return options    
+};
+
+// Adding the list of options in the select input field (used for filtering)
+var optionsLists = [];
+for (var i = 0; i < optionEntries.length; i ++){
+    optionsLists.push(optionEntries[i] = optionList(inputNames[i], optionValues[i], ids[i]));
+};
+console.log(optionsLists);
+
+// For each class, disable hide the 0th element of the array (of element of that class)
+for (var i = 1; i < ids.length; i ++){
+    document.getElementById(ids[i])[0].hidden = true;
+};
+
+// Refresh button that reloads page when clicked //
+var button = d3.select(".btn");
+function refreshPage(){
+    window.location.reload();
+};
+
+// Filter table
+var filters = {}; // will be populated by keys (date, state, city, shape) and values for each key
+
+// Create a function that creates a table based on the filter used
+function createTable(x){
+    var x;
+    x.forEach(function(dict){ 
         var row = tbody.append("tr");
     
-        // For each key-value pair in each dict
-        Object.entries(dict).forEach(function([key,value]){
-    
-            // Preview each value
-            console.log(value);
-    
-            // Add a cell in each row for each value
-            var cell = row.append("td");
-    
-            // Write each value into each cell
-            cell.text(value);
+        return Object.entries(dict).forEach(function([key,value]){
+                console.log(value);
+                var cell = row.append("td");
+                cell.text(value);
         });
     });
+};
+
+// Filter the table based on the options made
+function changeDate(){
+    tbody.text("");
+    filters["Date"] = inputDate.property("value");
+    console.log(filters);
+    
+    var x = sightings.filter(sighting => sighting.Date == filters["Date"]);
+    console.log(x); // outputs an array containing objects that match the selected date
+
+    createTable(x); // filter table based on date
+
+    function changeState(){
+        tbody.text("");
+        filters["State"] = inputState.property("value");
+        console.log(filters);
+
+        var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.State == filters["State"]);
+        console.log(x);
+
+        createTable(x);
         
-        // Create an array containing unique states from the filterDate array 
-        var states = Array.from(new Set(filterDate.map(dict => dict.State)));
-        states.unshift("All"); // Put "All" as the first item in the array
-        console.log(states);  
-
-        var inputState = d3.select("#state");
-        var optState = inputState  // populate the options depending on the values in the filtered table
-            .selectAll("option")
-            .data(states).enter()
-            .append("option")
-            .text(function(state){
-                return state;
-            });
-
-        function changeState(){  // nested function: after selecting the date, options available are states with sightings on that date
+        function changeCity(){
             tbody.text("");
-            var selState = inputState.property("value");
-            console.log(selState);
+            filters["City"] = inputCity.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.State == filters["State"] && sighting.City == filters["City"]);
+            console.log(x);
+
+            createTable(x);
+            
+            function changeShape(){
+                tbody.text("");
+                filters["Shape"] = inputShape.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.State == filters["State"] && sighting.City == filters["City"] && sighting.Shape == filters["Shape"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputShape.on("change", changeShape);
+        };
+        inputCity.on("change", changeCity);
+    
+        function changeShape(){
+            tbody.text("");
+            filters["Shape"] = inputShape.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.State == filters["State"] && sighting.Shape == filters["Shape"]);
+            console.log(x);
+
+            createTable(x);
+            
+            function changeCity(){
+                tbody.text("");
+                filters["City"] = inputCity.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.State == filters["State"] && sighting.Shape == filters["Shape"] && sighting.City == filters["City"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputCity.on("change", changeCity);    
+        };
+        inputShape.on("change", changeShape);
+    };
+    inputState.on("change", changeState);
+
+    function changeCity(){
+        tbody.text("");
+        filters["City"] = inputCity.property("value");
+        console.log(filters);
+
+        var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.City == filters["City"]);
+        console.log(x);
+
+        createTable(x);
         
-            var filterState = filterDate.filter(sighting => sighting.State === selState);
-            console.log(filterState);
+        function changeState(){
+            tbody.text("");
+            filters["State"] = inputState.property("value");
+            console.log(filters);
 
-            filterState.forEach(function(dict){ 
+            var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.City == filters["City"] && sighting.State == filters["State"]);
+            console.log(x);
 
-                // Add a row where values of each dict can go into
-                var row = tbody.append("tr");
-            
-                // For each key-value pair in each dict
-                Object.entries(dict).forEach(function([key,value]){
-            
-                    // Preview each value
-                    console.log(value);
-            
-                    // Add a cell in each row for each value
-                    var cell = row.append("td");
-            
-                    // Write each value into each cell
-                    cell.text(value);
-                });
-            });
+            createTable(x);
 
-            var cities = Array.from(new Set(filterState.map(dict => dict.City)));
-            cities.unshift("All");
-            console.log(cities); 
+            function changeShape(){
+                tbody.text("");
+                filters["Shape"] = inputShape.property("value");
+                console.log(filters);
 
-            var inputCity = d3.select("#city");
-            var optCity = inputCity
-            .selectAll("option")
-            .data(cities).enter()
-            .append("option")
-            .text(function(city){
-                return city;
-            });
+                var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.City == filters["City"] && sighting.State == filters["State"] && sighting.Shape == filters["Shape"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputShape.on("change", changeShape);
+        };
+        inputState.on("change", changeState); 
+        
+        function changeShape(){
+            tbody.text("");
+            filters["Shape"] = inputShape.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.City == filters["City"] && sighting.State == filters["State"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeState(){
+                tbody.text("");
+                filters["State"] = inputState.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.City == filters["City"] && sighting.State == filters["State"] && sighting.Shape == filters["Shape"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputState.on("change", changeState);    
+        };
+        inputShape.on("change", changeShape);
+    };
+    inputCity.on("change", changeCity);
+
+    function changeShape(){
+        tbody.text("");
+        filters["Shape"] = inputShape.property("value");
+        console.log(filters);
+
+        var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.Shape == filters["Shape"]);
+        console.log(x);
+
+        createTable(x);
+        
+        function changeCity(){
+            tbody.text("");
+            filters["City"] = inputCity.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.Shape == filters["Shape"] && sighting.City == filters["City"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeState(){
+                tbody.text("");
+                filters["State"] = inputState.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.Shape == filters["Shape"] && sighting.City == filters["City"] && sighting.State == filters["State"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputState.on("change", changeState);
+        };
+        inputCity.on("change", changeCity);
+
+        function changeState(){
+            tbody.text("");
+            filters["State"] = inputState.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.Shape == filters["Shape"] && sighting.State == filters["State"]);
+            console.log(x);
+
+            createTable(x);
 
             function changeCity(){
                 tbody.text("");
-                var selCity = inputCity.property("value");
-                console.log(selCity);
-        
-                var filterCity = filterState.filter(sighting => sighting.City === selCity);
-                console.log(filterCity);
-        
-                filterCity.forEach(function(dict){ 
-        
-                // Add a row where values of each dict can go into
-                var row = tbody.append("tr");
-            
-                // For each key-value pair in each dict
-                Object.entries(dict).forEach(function([key,value]){
-            
-                    // Preview each value
-                    console.log(value);
-            
-                    // Add a cell in each row for each value
-                    var cell = row.append("td");
-            
-                    // Write each value into each cell
-                    cell.text(value);
-                    });
-                });
+                filters["City"] = inputCity.property("value");
+                console.log(filters);
 
-                var shapes = Array.from(new Set(filterCity.map(dict => dict.Shape)));
-                shapes.unshift("All");
-                console.log(shapes);
+                var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.Shape == filters["Shape"] && sighting.City == filters["City"] && sighting.State == filters["State"]);
+                console.log(x);
 
-                var inputShape = d3.select("#shape");
-                var optShape = inputShape
-                    .selectAll("option")
-                    .data(shapes).enter()
-                    .append("option")
-                    .text(function(shape){
-                        return shape;
-                    });
-
-                function changeShape(){
-                    tbody.text("");
-                    var selShape = inputShape.property("value");
-                    console.log(selShape);
-
-                    var filterShape = filterCity.filter(sighting => sighting.Shape === selShape);
-                    console.log(filterShape);
-
-                    filterShape.forEach(function(dict){ 
-
-                        // Add a row where values of each dict can go into
-                        var row = tbody.append("tr");
-                    
-                        // For each key-value pair in each dict
-                        Object.entries(dict).forEach(function([key,value]){
-                    
-                            // Preview each value
-                            console.log(value);
-                    
-                            // Add a cell in each row for each value
-                            var cell = row.append("td");
-                    
-                            // Write each value into each cell
-                            cell.text(value);
-                        });
-                    });
-
-                document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen
-                };
-                inputShape.on("change", changeShape);
-
-            document.getElementById("city").disabled = true;  // grey out the select field once an option is chosen
+                createTable(x);
             };
-            inputCity.on("change", changeCity);    
-
-        document.getElementById("state").disabled = true;  // grey out the select field once an option is chosen  
+            inputCity.on("change", changeCity);
         };
         inputState.on("change", changeState);
-
-document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen
+    };
+    inputShape.on("change", changeShape);
 };
 inputDate.on("change", changeDate);
 
-// Refresh button
-// Resource: https://stackoverflow.com/a/50324264
-var button = d3.select(".btn");
-function refreshPage(){
-    window.location.reload(true);
+function changeState(){
+    tbody.text("");
+    filters["State"] = inputState.property("value");
+    console.log(filters);
+    
+    var x = sightings.filter(sighting => sighting.State == filters["State"]);
+    console.log(x);
+
+    createTable(x);
+
+    function changeDate(){
+        tbody.text("");
+        filters["Date"] = inputDate.property("value");
+        console.log(filters);
+
+        var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.Date == filters["Date"]);
+        console.log(x);
+
+        createTable(x);
+        
+        function changeCity(){
+            tbody.text("");
+            filters["City"] = inputCity.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.Date == filters["Date"] && sighting.City == filters["City"]);
+            console.log(x);
+
+            createTable(x);
+            
+            function changeShape(){
+                tbody.text("");
+                filters["Shape"] = inputShape.property("value");
+                console.log(filters);
+                
+                var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.Date == filters["Date"] && sighting.City == filters["City"] && sighting.Shape == filters["Shape"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputShape.on("change", changeShape);
+        };
+        inputCity.on("change", changeCity);
+    
+        function changeShape(){
+            tbody.text("");
+            filters["Shape"] = inputShape.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.Date == filters["Date"] && sighting.Shape == filters["Shape"]);
+            console.log(x);
+
+            createTable(x);
+            
+            function changeCity(){
+                tbody.text("");
+                filters["City"] = inputCity.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.Date == filters["Date"] && sighting.Shape == filters["Shape"] && sighting.City == filters["City"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputCity.on("change", changeCity);    
+        };
+        inputShape.on("change", changeShape);
+    };
+    inputDate.on("change", changeDate);
+
+    function changeCity(){
+        tbody.text("");
+        filters["City"] = inputCity.property("value");
+        console.log(filters);
+
+        var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.City == filters["City"]);
+        console.log(x);
+
+        createTable(x);
+        
+        function changeDate(){
+            tbody.text("");
+            filters["Date"] = inputDate.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.City == filters["City"] && sighting.Date == filters["Date"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeShape(){
+                tbody.text("");
+                filters["Shape"] = inputShape.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.City == filters["City"] && sighting.Date == filters["Date"] && sighting.Shape == filters["Shape"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputShape.on("change", changeShape);
+        };
+        inputDate.on("change", changeDate);
+
+        function changeShape(){
+            tbody.text("");
+            filters["Shape"] = inputShape.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.City == filters["City"] && sighting.Shape == filters["Shape"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeDate(){
+                tbody.text("");
+                filters["Date"] = inputDate.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.City == filters["City"] && sighting.Shape == filters["Shape"] && sighting.Date == filters["Date"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputDate.on("change", changeDate);    
+        };
+        inputShape.on("change", changeShape);
+    };
+    inputCity.on("change", changeCity);
+
+    function changeShape(){
+        tbody.text("");
+        filters["Shape"] = inputShape.property("value");
+        console.log(filters);
+
+        var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.Shape == filters["Shape"]);
+        console.log(x);
+
+        createTable(x);
+        
+        function changeDate(){
+            tbody.text("");
+            filters["Date"] = inputDate.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.Shape == filters["Shape"] && sighting.Date == filters["Date"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeCity(){
+                tbody.text("");
+                filters["City"] = inputCity.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.Shape == filters["Shape"] && sighting.Date == filters["Date"] && sighting.City == filters["City"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputCity.on("change", changeCity);
+        };
+        inputDate.on("change", changeDate);  
+        
+        function changeCity(){
+            tbody.text("");
+            filters["City"] = inputCity.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.Shape == filters["Shape"] && sighting.City == filters["City"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeDate(){
+                tbody.text("");
+                filters["Date"] = inputDate.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.Shape == filters["Shape"] && sighting.City == filters["City"] && sighting.Date == filters["Date"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputDate.on("change", changeDate);     
+        };
+        inputCity.on("change", changeCity);
+    };
+    inputShape.on("change", changeShape);
 };
+inputState.on("change", changeState);
+
+function changeCity(){
+    tbody.text("");
+    filters["City"] = inputCity.property("value");
+    console.log(filters);
+    
+    var x = sightings.filter(sighting => sighting.City == filters["City"]);
+    console.log(x);
+
+    createTable(x);
+
+    function changeShape(){
+        tbody.text("");
+        filters["Shape"] = inputShape.property("value");
+        console.log(filters);
+        
+        var x = sightings.filter(sighting => sighting.City == filters["City"] && sighting.Shape == filters["Shape"]);
+        console.log(x);
+
+        createTable(x);
+
+        function changeDate(){
+            tbody.text("");
+            filters["Date"] = inputDate.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.City == filters["City"] && sighting.Shape == filters["Shape"] && sighting.Date == filters["Date"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeState(){
+                tbody.text("");
+                filters["State"] = inputState.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.City == filters["City"] && sighting.Shape == filters["Shape"] && sighting.Date == filters["Date"] && sighting.State == filters["State"]);
+                console.log(x);
+
+                createTable(x);
+                
+            };
+            inputState.on("change", changeState);
+        };
+        inputDate.on("change", changeDate);
+
+        function changeState(){
+            tbody.text("");
+            filters["State"] = inputState.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.City == filters["City"] && sighting.Shape == filters["Shape"] && sighting.State == filters["State"]);
+            console.log(x);
+
+            createTable(x);
+            
+            function changeDate(){
+                tbody.text("");
+                filters["Date"] = inputDate.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.City == filters["City"] && sighting.Shape == filters["Shape"] && sighting.State == filters["State"] && sighting.Date == filters["Date"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputDate.on("change", changeDate);    
+        };
+        inputState.on("change", changeState);
+    };
+    inputShape.on("change", changeShape);
+
+    function changeDate(){
+        tbody.text("");
+        filters["Date"] = inputDate.property("value");
+        console.log(filters);
+
+        var x = sightings.filter(sighting => sighting.City == filters["City"] && sighting.Date == filters["Date"]);
+        console.log(x);
+
+        createTable(x);
+
+        function changeShape(){
+            tbody.text("");
+            filters["Shape"] = inputShape.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.City == filters["City"] && sighting.Date == filters["Date"] && sighting.Shape == filters["Shape"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeState(){
+                tbody.text("");
+                filters["State"] = inputState.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.City == filters["City"] && sighting.Date == filters["Date"] && sighting.Shape == filters["Shape"] && sighting.State == filters["State"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputState.on("change", changeState);
+        };
+        inputShape.on("change", changeShape);    
+    };
+    inputDate.on("change", changeDate);
+
+    function changeState(){
+        tbody.text("");
+        filters["State"] = inputState.property("value");
+        console.log(filters);
+
+        var x = sightings.filter(sighting => sighting.State == filters["State"] && sighting.City == filters["City"]);
+        console.log(x);
+
+        createTable(x);
+        
+        function changeDate(){
+            tbody.text("");
+            filters["Date"] = inputState.property("value");
+            console.log(filters);
+
+            var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.State == filters["State"] && sighting.City == filters["City"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeShape(){
+                tbody.text("");
+                filters["Shape"] = inputShape.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.Date == filters["Date"] && sighting.State == filters["State"] && sighting.City == filters["City"]  && sighting.Shape == filters["Shape"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputShape.on("change", changeShape);
+        };
+        inputDate.on("change", changeDate);
+    };
+    inputState.on("change", changeState);
+};
+inputCity.on("change", changeCity);
+
+function changeShape(){
+    tbody.text("");
+    filters["Shape"] = inputShape.property("value");
+    console.log(filters);
+    
+    var x = sightings.filter(sighting => sighting.Shape == filters["Shape"]);
+    console.log(x);
+
+    createTable(x);
+
+    function changeDate(){
+        tbody.text("");
+        filters["Date"] = inputDate.property("value");
+        console.log(filters);
+        
+        var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.Date == filters["Date"]);
+        console.log(x);
+
+        createTable(x);
+
+        function changeState(){
+            tbody.text("");
+            filters["State"] = inputState.property("value");
+            console.log(filters);
+            
+            var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.Date == filters["Date"] && sighting.State == filters["State"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeCity(){
+                tbody.text("");
+                filters["City"] = inputCity.property("value");
+                console.log(filters);
+        
+                var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.Date == filters["Date"] && sighting.City == filters["City"] && sighting.State == filters["State"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputCity.on("change", changeCity);
+        };
+        inputState.on("change", changeState);
+    
+        function changeCity(){
+            tbody.text("");
+            filters["City"] = inputCity.property("value");
+            console.log(filters);
+    
+            var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.Date == filters["Date"] && sighting.City == filters["City"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeState(){
+                tbody.text("");
+                filters["State"] = inputState.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.Date == filters["Date"] && sighting.City == filters["City"] && sighting.State == filters["State"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputState.on("change", changeState);    
+        };
+        inputCity.on("change", changeCity);
+    };
+    inputDate.on("change", changeDate);
+
+    function changeState(){
+        tbody.text("");
+        filters["State"] = inputState.property("value");
+        console.log(filters);
+        
+        var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.State == filters["State"]);
+        console.log(x);
+
+        createTable(x);
+
+        function changeCity(){
+            tbody.text("");
+            filters["City"] = inputCity.property("value");
+            console.log(filters);
+    
+            var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.City == filters["City"] && sighting.State == filters["State"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeDate(){
+                tbody.text("");
+                filters["Date"] = inputDate.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.City == filters["City"] && sighting.State == filters["State"] && sighting.Date == filters["Date"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputDate.on("change", changeDate);
+        };
+        inputCity.on("change", changeCity);
+    };
+    inputState.on("change", changeState);
+
+    function changeCity(){
+        tbody.text("");
+        filters["City"] = inputCity.property("value");
+        console.log(filters);
+
+        var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.City == filters["City"]);
+        console.log(x);
+
+        createTable(x);
+
+        function changeDate(){
+            tbody.text("");
+            filters["Date"] = inputState.property("value");
+            console.log(filters);
+            
+            var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.Date == filters["Date"] && sighting.City == filters["City"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeState(){
+                tbody.text("");
+                filters["State"] = inputState.property("value");
+                console.log(filters);
+                
+                var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.State == filters["State"] && sighting.City == filters["City"] && sighting.Date == filters["Date"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputState.on("change", changeState); 
+        };
+        inputDate.on("change", changeDate); 
+        
+        function changeState(){
+            tbody.text("");
+            filters["State"] = inputState.property("value");
+            console.log(filters);
+            
+            var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.State == filters["State"] && sighting.City == filters["City"]);
+            console.log(x);
+
+            createTable(x);
+
+            function changeDate(){
+                tbody.text("");
+                filters["Date"] = inputDate.property("value");
+                console.log(filters);
+
+                var x = sightings.filter(sighting => sighting.Shape == filters["Shape"] && sighting.State == filters["State"] && sighting.City == filters["City"] && sighting.Date == filters["Date"]);
+                console.log(x);
+
+                createTable(x);
+            };
+            inputDate.on("change", changeDate); 
+        };
+        inputState.on("change", changeState); 
+    };
+    inputCity.on("change", changeCity);
+};
+inputShape.on("change", changeShape);
+
 
 // PLOTTING ATTEMPT
 // Count the number of sightings per date, per state, per country, per shape, per city
@@ -397,4 +956,3 @@ var layout = {
 }
 
 Plotly.newPlot("bar-plot3", data, layout, {responsive: true});
-
