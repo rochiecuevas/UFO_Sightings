@@ -87,7 +87,7 @@ function filterTable(){
         variables[i].push(sighting[headers[i]]);
         })
         variables[i] = Array.from(new Set(variables[i]));
-        variables[i].unshift("All") // put "All" as the first choice
+        variables[i].unshift("") // put "All" as the first choice
         dataArr.push(variables[i]);
     }
     console.log(dataArr);
@@ -378,10 +378,13 @@ function filterTable(){
                     console.log(filters);
 
                     createTable();
+                    document.getElementById("city").disabled = true;  // grey out the select field once an option is chosen
                 };
-                inputCity.on("change", changeCity);    
+                inputCity.on("change", changeCity); 
+                document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen   
             };
             inputShape.on("change", changeShape);
+            document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen
         };
         inputDate.on("change", changeDate);
 
@@ -426,9 +429,10 @@ function filterTable(){
                     console.log(filters);
 
                     createTable();
+                    document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen
                 };
                 inputDate.on("change", changeDate);    
-                document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen
+                document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen
             };
             inputShape.on("change", changeShape);
             document.getElementById("city").disabled = true;  // grey out the select field once an option is chosen
@@ -455,7 +459,6 @@ function filterTable(){
                     console.log(filters);
 
                     createTable();
-
                     document.getElementById("city").disabled = true;  // grey out the select field once an option is chosen
                 };
                 inputCity.on("change", changeCity);
@@ -538,9 +541,10 @@ function filterTable(){
                     console.log(filters);
 
                     createTable();
+                    document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen
                 };
                 inputDate.on("change", changeDate);    
-                document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen
+                document.getElementById("state").disabled = true;  // grey out the select field once an option is chosen
             };
             inputState.on("change", changeState);
             document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen
@@ -585,7 +589,7 @@ function filterTable(){
 
                 function changeShape(){
                     tbody.text("");
-                    filters["Shape"] = inputState.property("value");
+                    filters["Shape"] = inputShape.property("value");
                     console.log(filters);
 
                     createTable();
@@ -609,7 +613,7 @@ function filterTable(){
             
             function changeDate(){
                 tbody.text("");
-                filters["Date"] = inputState.property("value");
+                filters["Date"] = inputDate.property("value");
                 console.log(filters);
 
                 createTable();
@@ -620,12 +624,34 @@ function filterTable(){
                     console.log(filters);
 
                     createTable();
+                    document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen
                 };
                 inputShape.on("change", changeShape);
-                document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen
+                document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen
             };
             inputDate.on("change", changeDate);
-            document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen
+            document.getElementById("state").disabled = true;  // grey out the select field once an option is chosen
+
+            function changeShape(){
+                tbody.text("");
+                filters["Shape"] = inputShape.property("value");
+                console.log(filters);
+
+                createTable();
+
+                function changeDate(){
+                    tbody.text("");
+                    filters["Date"] = inputDate.property("value");
+                    console.log(filters);
+
+                    createTable();
+                    document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen
+                };
+                inputDate.on("change", changeDate);
+                document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen
+            };
+            inputShape.on("change", changeShape);
+            document.getElementById("state").disabled = true;  // grey out the select field once an option is chosen
         };
         inputState.on("change", changeState);
         document.getElementById("city").disabled = true;  // grey out the select field once an option is chosen
@@ -731,7 +757,7 @@ function filterTable(){
 
             function changeDate(){
                 tbody.text("");
-                filters["Date"] = inputState.property("value");
+                filters["Date"] = inputDate.property("value");
                 console.log(filters);
                 
                 createTable();
@@ -778,7 +804,7 @@ function filterTable(){
     inputShape.on("change", changeShape);
 };
 
-// PLOTTING ATTEMPT
+// PLOTTING 
 // Count the number of sightings per date, per state, per country, per shape, per city
 function buildPlots(){
     var dataArr2 = []; // create an empty list
