@@ -122,10 +122,13 @@ for (var i = 0; i < optionEntries.length; i ++){
 };
 console.log(optionsLists);
 
-// For each class, disable hide the 0th element of the array (of element of that class)
+// For each class with names (state, city, shape), disable hide the 0th element of the array (of element of that class)
 for (var i = 1; i < ids.length; i ++){
     document.getElementById(ids[i])[0].hidden = true;
 };
+
+// Special case: for the date class, hide "All", which is the last element in the array of options
+document.getElementById(ids[0])[13].hidden = true;
 
 // Refresh button that reloads page when clicked //
 var button = d3.select(".btn");
@@ -190,8 +193,11 @@ function changeDate(){
                 console.log(x);
 
                 createTable(x);
+
+                document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen
             };
             inputShape.on("change", changeShape);
+            document.getElementById("city").disabled = true;  // grey out the select field once an option is chosen
         };
         inputCity.on("change", changeCity);
     
@@ -214,10 +220,14 @@ function changeDate(){
                 console.log(x);
 
                 createTable(x);
+
+                document.getElementById("city").disabled = true;  // grey out the select field once an option is chosen
             };
-            inputCity.on("change", changeCity);    
+            inputCity.on("change", changeCity);   
+            document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen 
         };
         inputShape.on("change", changeShape);
+        document.getElementById("state").disabled = true;  // grey out the select field once an option is chosen
     };
     inputState.on("change", changeState);
 
@@ -250,8 +260,11 @@ function changeDate(){
                 console.log(x);
 
                 createTable(x);
+
+                document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen
             };
             inputShape.on("change", changeShape);
+            document.getElementById("state").disabled = true;  // grey out the select field once an option is chosen
         };
         inputState.on("change", changeState); 
         
@@ -274,10 +287,14 @@ function changeDate(){
                 console.log(x);
 
                 createTable(x);
+            
+                document.getElementById("state").disabled = true;  // grey out the select field once an option is chosen
             };
             inputState.on("change", changeState);    
+            document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen
         };
         inputShape.on("change", changeShape);
+        document.getElementById("city").disabled = true;  // grey out the select field once an option is chosen
     };
     inputCity.on("change", changeCity);
 
@@ -310,8 +327,11 @@ function changeDate(){
                 console.log(x);
 
                 createTable(x);
+                
+                document.getElementById("state").disabled = true;  // grey out the select field once an option is chosen
             };
             inputState.on("change", changeState);
+            document.getElementById("city").disabled = true;  // grey out the select field once an option is chosen
         };
         inputCity.on("change", changeCity);
 
@@ -334,12 +354,17 @@ function changeDate(){
                 console.log(x);
 
                 createTable(x);
+            
+                document.getElementById("city").disabled = true;  // grey out the select field once an option is chosen
             };
             inputCity.on("change", changeCity);
+            document.getElementById("state").disabled = true;  // grey out the select field once an option is chosen
         };
         inputState.on("change", changeState);
+        document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen
     };
     inputShape.on("change", changeShape);
+    document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen
 };
 inputDate.on("change", changeDate);
 
