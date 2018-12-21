@@ -149,7 +149,7 @@ function filterTable(){
     // Create a function that creates a table based on the filter used
     function createTable(){
         var x = sightings.filter(search, filters);
-                    console.log(x);
+        console.log(x);
 
         x.forEach(function(dict){ 
             var row = tbody.append("tr");
@@ -167,9 +167,6 @@ function filterTable(){
         tbody.text("");
         filters["Date"] = inputDate.property("value");
         console.log(filters);
-        
-        // var x = sightings.filter(search, filters);
-        // console.log(x); // outputs an array containing objects that match the selected date
 
         createTable(); // filter table based on date
 
@@ -574,9 +571,32 @@ function filterTable(){
                     document.getElementById("state").disabled = true;  // grey out the select field once an option is chosen
                 };
                 inputState.on("change", changeState);
+                document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen  
             };
             inputShape.on("change", changeShape);  
             document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen  
+        
+            function changeState(){
+                tbody.text("");
+                filters["State"] = inputState.property("value");
+                console.log(filters);
+
+                createTable();
+
+                function changeShape(){
+                    tbody.text("");
+                    filters["Shape"] = inputState.property("value");
+                    console.log(filters);
+
+                    createTable();
+
+                    document.getElementById("shape").disabled = true;  // grey out the select field once an option is chosen
+                };
+                inputShape.on("change", changeShape);
+                document.getElementById("state").disabled = true;  // grey out the select field once an option is chosen
+            };
+            inputState.on("change", changeState);
+            document.getElementById("date").disabled = true;  // grey out the select field once an option is chosen
         };
         inputDate.on("change", changeDate);
 
