@@ -1,3 +1,7 @@
+---
+permalink: /index.html
+---
+
 # Aliens Among Us
 **Aliens Among Us** is the product of converting the [UFO Sightings](https://github.com/rochiecuevas/UFO_Sightings/blob/master/data.js) dataset, which is presented as an array of objects, into a HTML table through the use of [d3.js](https://d3js.org/) and plotting the data into bar graphs using [plotly.js](https://plot.ly/javascript/). 
 
